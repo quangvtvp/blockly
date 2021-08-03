@@ -149,6 +149,35 @@ Blockly.Arduino["math_number"]=function(block){
     var order = code < 0 ? Blockly.Arduino.ORDER_UNARY_PREFIX : Blockly.Arduino.ORDER_ATOMIC;
     return [code, order]
 };
+
+Blockly.Arduino['analog_pin'] = function(block) {
+  // Numeric value.
+  var code = this.getFieldValue("NUM");
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+Blockly.Arduino["math_map"]=function(block){
+    var pin=Blockly.Arduino.valueToCode(block, "pin", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var A1=Blockly.Arduino.valueToCode(block, "A1", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var A2=Blockly.Arduino.valueToCode(block, "A2", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var B1=Blockly.Arduino.valueToCode(block, "B1", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var B2=Blockly.Arduino.valueToCode(block, "B2", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var code ='map('+pin+','+A1+','+A2+','+B1+','+B2+')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino["math_constrain"]=function(block){
+    var number=Blockly.Arduino.valueToCode(block, "VALUE", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var A=Blockly.Arduino.valueToCode(block, "LOW", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var B=Blockly.Arduino.valueToCode(block, "HIGH", Blockly.Arduino.ORDER_ASSIGNMENT);
+    var code ='(constrain('+number+','+A+','+B+'))';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino["inout_angle_maths"]=function(block){
+    var angle=block.getFieldValue("ANGLE");
+    return [angle, Blockly.Arduino.ORDER_ATOMIC]
+};
+
 Blockly.Arduino["math_arithmetic"]=function(block){
     var mode = block.getFieldValue("OP");
     var tuple = Blockly.Arduino.math_arithmetic.OPERATORS[mode];
@@ -256,16 +285,15 @@ Blockly.Arduino["math_trig"] = Blockly.Arduino["math_single"];
 Blockly.Arduino["math_modulo"]=function(block){
     var argument0 = Blockly.Arduino.valueToCode(block, "DIVIDEND", Blockly.Arduino.ORDER_MODULUS);
     var argument1 = Blockly.Arduino.valueToCode(block, "DIVISOR", Blockly.Arduino.ORDER_MODULUS);
-    var code = argument0 + " % " + argument1;
+    var code = "("+argument0 + ") % (" + argument1+")";
     return [code, Blockly.Arduino.ORDER_MODULUS]
 };
 Blockly.Arduino["math_random_int"]=function(block){
     var argument0 = Blockly.Arduino.valueToCode(block, "FROM", Blockly.Arduino.ORDER_COMMA);
     var arg = Blockly.Arduino.valueToCode(block, "TO", Blockly.Arduino.ORDER_COMMA);
-	var argument1 = parseInt(arg) + 1 ;
-    var functionName = Blockly.Arduino.provideFunction_("random_int", ["long " + Blockly.Arduino.FUNCTION_NAME_PLACEHOLDER_ + "(int a,int b) {", "  if (a > b) {",  "    int c = a;", "    a = b;", "    b = c;", "  }", "  return random(a,b);", "}"]);
+    var functionName = Blockly.Arduino.provideFunction_("random_int", ["double " + Blockly.Arduino.FUNCTION_NAME_PLACEHOLDER_ + "(int a,int b) {", "  if (a > b) {",  "    int c = a;", "    a = b;", "    b = c;", "  }", "  return (double) random(a,b+1);", "}"]);
     Blockly.Arduino.setups_["randomseed"] = "randomSeed(analogRead(0));";
-	var code = functionName + "(" + argument0 + ", " + argument1 + ")";
+	var code = functionName + "(" + argument0 + ", " + arg + ")";
     return [code, Blockly.Arduino.ORDER_FUNCTION_CALL]
 };
 // texte
@@ -483,3 +511,11 @@ Blockly.Arduino["array_create_with"]=function(block){
     code = '{' + code.join(',') + '}';
     return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino['mrtduino_pin'] = function(block) {
+
+  var code = block.getFieldValue('MRTPIN');  
+   
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+

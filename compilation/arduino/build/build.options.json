@@ -1,0 +1,10 @@
+{
+  "builtInLibrariesFolders": "E:\\NAMTHANGSINHVIEN\\myAwesomeJob\\oldFolder\\otto_Cubee\\otto_blockly\\maintask\\blockly\\compilation\\arduino\\libraries",
+  "customBuildProperties": "",
+  "fqbn": "arduino:avr:nano",
+  "hardwareFolders": "E:\\NAMTHANGSINHVIEN\\myAwesomeJob\\oldFolder\\otto_Cubee\\otto_blockly\\maintask\\blockly\\compilation\\arduino",
+  "otherLibrariesFolders": "",
+  "runtime.ide.version": "10600",
+  "sketchLocation": "E:\\NAMTHANGSINHVIEN\\myAwesomeJob\\oldFolder\\otto_Cubee\\otto_blockly\\maintask\\blockly\\compilation\\arduino\\ino\\sketch.ino",
+  "toolsFolders": "E:\\NAMTHANGSINHVIEN\\myAwesomeJob\\oldFolder\\otto_Cubee\\otto_blockly\\maintask\\blockly\\compilation\\arduino\\tools-builder,E:\\NAMTHANGSINHVIEN\\myAwesomeJob\\oldFolder\\otto_Cubee\\otto_blockly\\maintask\\blockly\\compilation\\arduino\\tools\\avr"
+}

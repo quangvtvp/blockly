@@ -324,6 +324,7 @@ function init() {
     document.getElementById('generatorPre')
   ];
   var onresize = function(e) {
+    console.log('dsfsda')
     for (var i = 0, expand; expand = expandList[i]; i++) {
       expand.style.width = (expand.parentNode.offsetWidth - 2) + 'px';
       expand.style.height = (expand.parentNode.offsetHeight - 2) + 'px';

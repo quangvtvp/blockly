@@ -3,6 +3,7 @@ var { exec } = require('child_process')
 var sp = require('serialport')
 var fs = require('fs')
 var path = require('path')
+const { connect } = require("net")
 var appVersion = window.require('electron').remote.app.getVersion()
 
 window.addEventListener('load', function load(event) {
@@ -26,7 +27,7 @@ window.addEventListener('load', function load(event) {
 		shell.openExternal('https://www.ottodiy.com/#contact-us')
 	})
 	$('#portserie').mouseover(function(){
-		sp.list(function(err,ports) {
+		sp.list().then(ports=> {
 			var nb_com = localStorage.getItem("nb_com"), menu_opt = portserie.getElementsByTagName('option')
 			if(ports.length > nb_com){
 				ports.forEach(function(port){
@@ -91,7 +92,7 @@ window.addEventListener('load', function load(event) {
 			})
 		}
 	})
-	sp.list(function(err,ports){
+	sp.list().then(ports=> {
 		var opt = document.createElement('option')
 		opt.value = "com"
 		opt.text = Blockly.Msg.com1
@@ -135,6 +136,7 @@ window.addEventListener('load', function load(event) {
 			var data = $('#pre_previewArduino').text()
 		}
 		var carte = localStorage.getItem('card')
+		console.log(carte)
 		var prog = localStorage.getItem('prog')
 		var com = portserie.value
 		messageDiv.style.color = '#000000'
