@@ -1,5 +1,14 @@
 *.DS_Store
 
+!compilation/arduino/build/README.cm
+compilation/arduino/build/*
+
+!compilation/arduino/cache/README.cm
+compilation/arduino/cache/*
+
+!compilation/arduino/ino/README.cm
+compilation/arduino/ino/*
+
 node_modules/
 dist/
 .vscode/
