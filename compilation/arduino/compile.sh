@@ -1,0 +1,1 @@
+./arduino-cli.run compile -e -b  arduino:avr:nano:cpu=atmega328old $1 --libraries $2
