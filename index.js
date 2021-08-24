@@ -14,49 +14,50 @@ app.use(express.static('dist'))
 
 app.use(express.json());
 app.use(express.urlencoded({
-  extended: true
+    extended: true
 }));
 
 app.get('/', (req, res) => {
-  res.render('index.html')
+    res.render('index.html')
 })
 
 app.get('/blockly', (req, res) => {
-  res.sendFile(path.join(__dirname) + '/dist/index.html')
+    res.sendFile(path.join(__dirname) + '/dist/index.html')
 })
 
 app.use('/api', apiRouter)
 
 app.post('/api/verify', (req, res) => {
 
-  res.send('hello')
+    res.send('hello')
 })
 
 function init() {
-  var compilePath = path.join(__dirname, './compilation/arduino')
+    var compilePath = path.join(__dirname, './compilation/arduino')
 
-  exec('chmod +x compile.sh ; chmod +x arduino-cli.run', { cwd: compilePath }, function (err, stdout, stderr) {
-    if (err) {
-      console.log(`ERROR: ${err}`)
-    }
-    else {
-      // exec('./arduino-cli core install arduino:avr', { cwd: compilePath }, function (err, stdout, stderr) {
-      //   if (err) {
-      //     console.log(`err: ${err}`)
-      //   }
-      //   if (stdout) {
-      //     console.log(`stdout: ${stdout}`)
-      //   }
-      //   if (stderr) {
-      //     console.log(`stderr: ${stderr}`)
-      //   }
-      // })
-    }
-  })
+    exec('arduino-cli version',function (err, stdout, stderr) {
+        if (err) {
+            console.error(`ERROR: ${err}`)
+        }
+        if (stdout) {
+            console.log(`stdout: ${stdout}`)
+        }
+        if (stderr) {
+            console.error(`stderr: ${stderr}`)
+        }
+    })
+
+
+    exec('chmod +x compile.sh', { cwd: compilePath }, function (err, stdout, stderr) {
+        if (err) {
+            console.error(`ERROR: ${err}`)
+        }
+      
+    })
 }
 
 app.listen(port, () => {
-  console.log(`app listening at http://localhost:${port}`)
-  init()
+    console.log(`app listening at http://localhost:${port}`)
+    init()
 })
 
