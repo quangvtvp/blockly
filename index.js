@@ -6,7 +6,7 @@ const { exec } = require('child_process');
 const apiRouter = require('./api/routes/verify.route')
 
 const app = express()
-const port = process.env.port || 8080
+const port = process.env.port || 3000
 
 app.set('views', path.join(__dirname, 'dist'))
 
@@ -35,17 +35,17 @@ app.post('/api/verify', (req, res) => {
 function init() {
     var compilePath = path.join(__dirname, './compilation/arduino')
 
-    exec('arduino-cli version',function (err, stdout, stderr) {
-        if (err) {
-            console.error(`ERROR: ${err}`)
-        }
-        if (stdout) {
-            console.log(`stdout: ${stdout}`)
-        }
-        if (stderr) {
-            console.error(`stderr: ${stderr}`)
-        }
-    })
+    // exec('arduino-cli version',function (err, stdout, stderr) {
+    //     if (err) {
+    //         console.error(`ERROR: ${err}`)
+    //     }
+    //     if (stdout) {
+    //         console.log(`stdout: ${stdout}`)
+    //     }
+    //     if (stderr) {
+    //         console.error(`stderr: ${stderr}`)
+    //     }
+    // })
 
 
     exec('chmod +x compile.sh', { cwd: compilePath }, function (err, stdout, stderr) {

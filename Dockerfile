@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 
 #install arduino-cli
 RUN apt-get update && apt-get install -y curl
-RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sh -s 0.18.0
+RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=/usr/local/bin sh
 RUN arduino-cli core update-index
 RUN arduino-cli core install arduino:avr
 
@@ -22,6 +22,8 @@ COPY package*.json ./
 RUN npm install --production
 # Copy local code to the container image.
 COPY . ./
+
+EXPOSE 3000
 
 # Run the web service on container startup.
 CMD ["node", "index.js"]

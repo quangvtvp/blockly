@@ -49,9 +49,9 @@ function compileToHex(ino) {
             if (stdout) {
                 console.log(`stdout: ${stdout}`)
                 try {
-                    var data = fs.readFileSync('./compilation/arduino/sketch/build/arduino.avr.nano/sketch.ino.hex')
+                    // var data = fs.readFileSync('./compilation/arduino/sketch/build/arduino.avr.nano/sketch.ino.hex')
                     resolve({
-                        'hex': data,
+                      //  'hex': data,
                         'stdout': stdout
                     })
                 } catch (err) {
