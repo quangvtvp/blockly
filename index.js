@@ -2,11 +2,10 @@ const express = require('express')
 const path = require('path')
 const { exec } = require('child_process');
 
-
 const apiRouter = require('./api/routes/verify.route')
 
 const app = express()
-const port = process.env.port || 3000
+const port = process.env.port || 8080
 
 app.set('views', path.join(__dirname, 'dist'))
 
@@ -34,30 +33,15 @@ app.post('/api/verify', (req, res) => {
 
 function init() {
     var compilePath = path.join(__dirname, './compilation/arduino')
-
-    // exec('arduino-cli version',function (err, stdout, stderr) {
-    //     if (err) {
-    //         console.error(`ERROR: ${err}`)
-    //     }
-    //     if (stdout) {
-    //         console.log(`stdout: ${stdout}`)
-    //     }
-    //     if (stderr) {
-    //         console.error(`stderr: ${stderr}`)
-    //     }
-    // })
-
-
-    exec('chmod +x compile.sh', { cwd: compilePath }, function (err, stdout, stderr) {
+    exec('chmod +x compile.sh && chmod +x core-update.sh ', { cwd: compilePath }, function (err, stdout, stderr) {
         if (err) {
             console.error(`ERROR: ${err}`)
         }
-      
     })
 }
 
 app.listen(port, () => {
-    console.log(`app listening at http://localhost:${port}`)
+    console.log(`app listening at PORT: ${port}`)
     init()
 })
 

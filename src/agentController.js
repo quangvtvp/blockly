@@ -7,65 +7,6 @@ const LOOKUP_PORT_END = 9000;
 const commandline = "\"{runtime.tools.avrdude.path}/bin/avrdude\" \"-C{runtime.tools.avrdude.path}/etc/avrdude.conf\" -v  -patmega328p -carduino \"-P{serial.port}\" -b57600 -D \"-Uflash:w:{build.path}/{build.project_name}.hex:i\""
 const signature = "59904ad885349bb2a675fe5dc36f65714198ad43714cdcd277555886cac6bf449feb0937b7e44a4e79add4b36b8db9774424591efc63e694427e1bf5458ff2fadcbc1a3c555f0f7e3eb9cdfc6add62203be6509f5a7de9eadafda687a789afc2346342b6115318ca4fe4783e2e5c63ca4ad98af5ddcb4b8ab81eca611ead6f16d0a398ae5b51f8add985a72037507cc45af948798e744f36aded2576db64f26a16b059fc02d1a258564630e8877312edad95eee8868a91ef3e36bed8a4ad75bb8d930459921333e757c879dc95c710f23b808477168dc3710f0e6fde842b12a890cd2be554302afb76636f90bec311623782f0544c036a364bfcb0e506e9195c"
 
-// var PORT;
-// var socket;
-// async function findAgent() {
-//     localStorage.removeItem('agentInfo')
-//     localStorage.setItem('agentStatus', 'Not Found')
-//     localStorage.setItem('channelStatus', 'Not connected')
-//     for (let port = LOOKUP_PORT_START; port < LOOKUP_PORT_END; port += 1) {
-//         try {
-//             const response = await fetch(`${LOOPBACK_ADDRESS}:${port}/info`)
-//             if (response.status == '200') {
-//                 PORT = port
-//                 await response.json().then((data) => {
-//                     localStorage.setItem('agentStatus', 'Found')
-//                     localStorage.setItem('agentInfo', JSON.stringify(data))
-//                 })
-//                 return Promise.resolve()
-//             }
-//         }
-//         catch (err) {
-//             // console.log(err)
-//         }
-//     }
-//     return Promise.reject()
-// }
-
-// module.exports.getPorts = function () {
-//     if (socket.connected) {
-//         socket.emit('command', 'list');
-//     }
-//     else {
-//         socket.connected()
-//     }
-//     // fetch(`${LOOPBACK_ADDRESS}:${PORT}/info`)
-//     // .then((response)=>response.json())
-//     // .then((data)=>{
-//     //     var address= data.ws
-//     //     var socket=io(address)
-//     //     socket.on()
-//     // })
-//     // .catch((err)=>{
-
-//     // })
-// }
-
-// function agentInit(address) {
-//     console.log(address)
-//     socket = io(address)
-//     socket.on('connect', function () {
-//         console.log('Connected success')
-//         localStorage.setItem('channelStatus', 'Connected')
-//         socket.on('message', function (message) {
-//             // Your code to handle messages
-//             var data = JSON.parse(message)
-//             console.log(data)
-//             // console.log(message)
-//         })
-//     })
-// }
-
 function handlerPorts(data) {
     if ((data.Ports) && (!data.Network)) {
         var portserie = document.getElementById('portserie')
@@ -114,8 +55,6 @@ function handlerFlashStatus(data) {
 
 }
 
-
-
 export class AgentController {
     constructor () {
         this.socket = null
@@ -139,7 +78,7 @@ export class AgentController {
                 }
             }
             catch (err) {
-                // console.log(err)
+                console.error(err)
             }
         }
         return Promise.reject()
@@ -155,9 +94,17 @@ export class AgentController {
     }
     agentHandlerMessage() {
         this.socket.on('message', function (message) {
-            console.log(message)
-            var data = JSON.parse(message)
-
+            
+           console.log(message)
+            var data = {}
+            if (String(message).charAt(0) == '{') {
+                try {
+                    data = JSON.parse(message)
+                }
+                catch (err) {
+                    console.error(err)
+                }
+            }
             if (data.OS) {
                 this.OS = data.OS
             }

@@ -121,7 +121,7 @@ window.addEventListener('load', function load(event) {
                 } else {
                     var data = $('#pre_previewArduino').text()
                 }
-                fetch('http://' + window.location.host + "/api/verify", {
+                fetch('https://' + window.location.host + "/api/verify", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
