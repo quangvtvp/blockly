@@ -13,11 +13,11 @@ function handlerPorts(data) {
         var menu_opt = portserie.getElementsByTagName('option')
 
         var hasSelectedCom = false
-        var selectedCom = menu_opt[ portserie.selectedIndex ]
+        var selectedCom = menu_opt[portserie.selectedIndex]
 
         for (let i = 1; i < menu_opt.length; i++) {
             if (i != portserie.selectedIndex) {
-                portserie.removeChild(menu_opt[ i ])
+                portserie.removeChild(menu_opt[i])
             }
         }
         data.Ports.forEach(element => {
@@ -56,7 +56,7 @@ function handlerFlashStatus(data) {
 }
 
 export class AgentController {
-    constructor () {
+    constructor() {
         this.socket = null
     }
     async findAgent() {
@@ -94,8 +94,8 @@ export class AgentController {
     }
     agentHandlerMessage() {
         this.socket.on('message', function (message) {
-            
-           console.log(message)
+
+            console.log(message)
             var data = {}
             if (String(message).charAt(0) == '{') {
                 try {
@@ -118,7 +118,7 @@ export class AgentController {
     }
 
     async upload(hex, com) {
-        var payload = {
+        var uploadPayload = {
             "board": "arduino:avr:nano:cpu=atmega328old",
             "port": com,
             "commandline": commandline,
@@ -139,19 +139,44 @@ export class AgentController {
             }
         }
 
-        fetch(`${this.http}/upload`, {
+        var installedPayload = {
+            "checksum": "SHA-256:e99188873c7c5ad8f8f906f068c33600e758b2e36cce3adbd518a21bd266749d",
+            "name": "avrdude",
+            "packager": "arduino",
+            // "signature": "735ef8ae2799df3a08ae523d57c827adfb77f8369dfff1668cb21c8f82c1b983f6cbaf9ece83a6080bd1c1bc24fe12be08a282e43eb37e36643cf4b4cd7d1bcc5707dc07bfdd443808653a18a9048ba7b6302c7e9269ac90c2e98494b6a55dc543ed6dfb215906f79881b997451cd38ded05a5bbe17c3d3b156bc69fb9e6e16e51ae631d6ca99e2fd664c57569bb38bbaa4ee32c8b3f1ef12143fad39b90c538ddc0352cbd045351b56bd9f1c2f2487041aa058759ef2353cf1a554d565e7d8d42e7c71c9200624084f7ec61840dc74ec7d308fe0504cca2969b1bbe5a604f9012783f4a99e45cab91505a2b49e138deec07dbdfb2becf48ffc924db574da2d7",
+            "url": "http://downloads.arduino.cc/tools/avrdude-6.3.0-arduino17-i686-w64-mingw32.zip",
+            "version": "6.3.0-arduino17"
+        }
+
+
+        fetch(`${this.http}/v2/pkgs/tools/installed`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/plain;charset=UTF-8'
             },
-            body: JSON.stringify(payload)
+            body: JSON.stringify(installedPayload)
+        }).then(data => {
+            if (data.status == 200) {
+                fetch(`${this.http}/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(uploadPayload)
+                })
+                    .then(data => {
+                        return Promise.resolve('Success:', data)
+                    })
+                    .catch((error) => {
+                        return Promise.reject('Error: ', error)
+                    });
+            }
+
         })
-            .then(data => {
-                return Promise.resolve('Success:', data)
-            })
             .catch((error) => {
                 return Promise.reject('Error: ', error)
-            });
+            })
+
     }
 
     downloadTool() {
